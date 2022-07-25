@@ -12,8 +12,7 @@ export const Home = () => {
   useEffect(() => {
     const imagesToDisplay = IMAGES.slice(0, page * 10);
     setImages(imagesToDisplay);
-
-    if (imagesToDisplay === IMAGES.length) setHasMore(false);
+    if (imagesToDisplay.length === IMAGES.length) setHasMore(false);
   }, [page]);
 
   useEffect(() => {
@@ -32,10 +31,12 @@ export const Home = () => {
           <ImageCover image={image} key={image} />
         ))}
       </div>
-      {hasMore && (
+      {hasMore ? (
         <h2 ref={loadingdRef} className="loading">
           loading....
         </h2>
+      ) : (
+        <h2 className="no-more">No More Birds Pictures</h2>
       )}
     </div>
   );
