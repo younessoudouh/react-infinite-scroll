@@ -9,26 +9,18 @@ export const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const loadingdRef = useRef(null);
 
-  const isInViewPort = ([entries]) => {
-    if (entries.isIntersecting) {
-      setPage((page) => page + 1);
-    }
-  };
-
   useEffect(() => {
-    setImages(imagesToDisplay(page));
-    if (images.length === IMAGES.length) {
-      setHasMore(false);
-    }
+    const imagesToDisplay = IMAGES.slice(0, page * 10);
+    setImages(imagesToDisplay);
+
+    if (imagesToDisplay === IMAGES.length) setHasMore(false);
   }, [page]);
 
-  const imagesToDisplay = (page) => {
-    return IMAGES.slice(0, page * 10);
-  };
-
-  const observer = new IntersectionObserver(isInViewPort);
-
   useEffect(() => {
+    const observer = new IntersectionObserver(([entrie]) => {
+      if (entrie.isIntersecting) setPage((page) => page + 1);
+    });
+
     observer.observe(loadingdRef.current);
   }, []);
 
